@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  invoiceSchema,
+  type Invoice,
+} from "@handikade/nekopay-invoice-studio-schema";
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import * as React from "react";
+import { z } from "zod";
+import top100Films from "./top100films";
 
-function App() {
-  const [count, setCount] = useState(0)
+const invoice: Invoice = {
+  billFrom: {
+    address: "asdfasdf",
+    email: "dika@gmail.com",
+    name: "dika",
+    phone: "23412341234",
+  },
+  billTo: {
+    address: "qwerqwe sfdgsg",
+    email: "sadsgf@asdfdf.id",
+    name: "",
+    phone: "adfasdf",
+  },
+  currency: "IDR",
+  dueDate: new Date(),
+  id: "asdfasdf",
+  invoiceNumber: "asdfasdf",
+  issueDate: new Date(),
+  items: [
+    {
+      description: "asdfasdf",
+      id: "asdfasdf",
+      price: 0,
+      quantity: 0,
+    },
+  ],
+  signatureTextFooter: "asdf",
+  signatureTextHeader: "asdf",
+  signatureURL: "asdfasdf",
+};
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+try {
+  invoiceSchema.parse(invoice);
+} catch (error) {
+  console.log(z.treeifyError(error));
 }
 
-export default App
+function App() {
+  return (
+    <React.Fragment>
+      <CssBaseline></CssBaseline>
+      <Button variant="contained">Hello world</Button>
+      <hr></hr>
+      <Autocomplete
+        disablePortal
+        options={top100Films}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} label="Movie" />}
+      />
+    </React.Fragment>
+  );
+}
+
+export default App;

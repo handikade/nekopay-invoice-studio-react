@@ -1,14 +1,16 @@
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
+import {
+  Box,
+  Divider,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
+import type { DeepPartial } from "react-hook-form";
 import type { Invoice } from "./schema";
 
 const invoiceTheme = createTheme({
@@ -17,7 +19,7 @@ const invoiceTheme = createTheme({
   },
 });
 type InvoiceTemplateDefaultProps = {
-  invoice?: Partial<Invoice>;
+  invoice: DeepPartial<Invoice>;
 };
 
 const formatText = (value?: string) => {

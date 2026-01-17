@@ -1,58 +1,47 @@
-.test {
-  /* This creates the soft, blurred pink and purple effect */
-  background-color: #bbbff8; /* Fallback base color */
-  background-image: radial-gradient(
-      circle at 20% 30%,
-      #bbbff8 0%,
-      transparent 40%
-    ),
-    radial-gradient(circle at 80% 20%, #becce7 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, #e5e5f5 0%, transparent 40%),
-    radial-gradient(circle at 10% 90%, #e4e8fc 0%, transparent 50%);
-
-  background-attachment: fixed;
-  background-size: 140% 140%;
-  background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%;
-  animation: radialGlowDrift 18s ease-in-out infinite;
-  height: 100vh;
-  margin: 0;
-}
-
-@keyframes radialGlowDrift {
-  0% {
-    background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%;
-  }
-  50% {
-    background-position: 10% 20%, 80% 10%, 90% 80%, 20% 90%;
-  }
-  100% {
-    background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%;
-  }
-}
-
 .bg {
   animation: slide 3s ease-in-out infinite alternate;
-  background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
-  bottom: 0;
-  left: -50%;
+  /* background-image: linear-gradient(
+    -60deg,
+    rgb(86, 214, 231) 50%,
+    rgb(0, 140, 255) 50%
+  ); */
+  background-image: linear-gradient(
+    -60deg,
+    rgb(86, 214, 231) 0%,
+    rgb(86, 214, 231) 45%,
+    rgb(0, 140, 255) 55%,
+    rgb(0, 140, 255) 100%
+  );
   opacity: 0.5;
   position: fixed;
+  bottom: 0;
+  left: -50%;
   right: -50%;
   top: 0;
   z-index: -1;
 }
 
 .bg2 {
+  background-image: linear-gradient(
+    10deg,
+    rgb(86, 214, 231) 0%,
+    rgb(86, 214, 231) 45%,
+    rgb(0, 140, 255) 55%,
+    rgb(0, 140, 255) 100%
+  );
   animation-direction: alternate-reverse;
   animation-duration: 4s;
 }
 
 .bg3 {
+  background-image: linear-gradient(
+    -40deg,
+    rgb(86, 214, 231) 0%,
+    rgb(86, 214, 231) 45%,
+    rgb(0, 140, 255) 55%,
+    rgb(0, 140, 255) 100%
+  );
   animation-duration: 5s;
-}
-
-h1 {
-  font-family: monospace;
 }
 
 @keyframes slide {

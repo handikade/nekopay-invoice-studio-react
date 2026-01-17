@@ -17,13 +17,17 @@ const glassCardSx = {
   borderRadius: "10px",
 };
 
-type InvoiceItemProps = {
+export type InvoiceFormItemProps = {
   index: number;
   onRemove: (index: number) => void;
   autoFocus?: boolean;
 };
 
-const InvoiceItem = ({ index, onRemove, autoFocus }: InvoiceItemProps) => {
+const InvoiceFormItem = ({
+  index,
+  onRemove,
+  autoFocus,
+}: InvoiceFormItemProps) => {
   const { control, register } = useFormContext();
   const quantity = useWatch({
     control,
@@ -41,7 +45,7 @@ const InvoiceItem = ({ index, onRemove, autoFocus }: InvoiceItemProps) => {
       <CardContent>
         <input type="hidden" {...register(`items.${index}.id`)} />
         <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <TextField
               autoFocus={autoFocus}
               fullWidth
@@ -50,7 +54,7 @@ const InvoiceItem = ({ index, onRemove, autoFocus }: InvoiceItemProps) => {
               {...register(`items.${index}.description`)}
             />
           </Grid>
-          <Grid size={{ xs: 6, md: 3 }}>
+          <Grid size={{ xs: 6, md: 6 }}>
             <TextField
               fullWidth
               label="Quantity"
@@ -60,7 +64,7 @@ const InvoiceItem = ({ index, onRemove, autoFocus }: InvoiceItemProps) => {
               {...register(`items.${index}.quantity`, { valueAsNumber: true })}
             />
           </Grid>
-          <Grid size={{ xs: 6, md: 3 }}>
+          <Grid size={{ xs: 6, md: 6 }}>
             <TextField
               fullWidth
               label="Price"
@@ -93,4 +97,4 @@ const InvoiceItem = ({ index, onRemove, autoFocus }: InvoiceItemProps) => {
   );
 };
 
-export default InvoiceItem;
+export default InvoiceFormItem;

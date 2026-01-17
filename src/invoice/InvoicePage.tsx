@@ -9,17 +9,29 @@ import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { FormProvider, useForm } from "react-hook-form";
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  useWatch,
+} from "react-hook-form";
 import InvoiceForm from "./InvoiceForm";
-import InvoicePreview from "./InvoicePreview";
+import InvoiceTemplateDefault from "./InvoiceTemplateDefault";
 
 const glassCardSx = {
   flexGrow: 1,
   backgroundColor: "rgba(255, 255, 255, 0.4)",
-  border: "1px solid rgba(255, 255, 255, 0.1)",
+  border: "1px solid rgba(255, 255, 255, 0.6)",
   boxShadow: "0 12px 30px rgba(8, 20, 40, 0.2)",
   backdropFilter: "blur(18px) saturate(140%)",
   borderRadius: "20px",
+};
+
+const InvoicePreviewPanel = () => {
+  const { control } = useFormContext<Invoice>();
+  const invoice = useWatch({ control });
+
+  return <InvoiceTemplateDefault invoice={invoice} />;
 };
 
 const InvoicePage = () => {
@@ -59,7 +71,7 @@ const InvoicePage = () => {
                     {/* <Typography color="text.secondary">
                     Render the invoice preview here.
                   </Typography> */}
-                    <InvoicePreview></InvoicePreview>
+                    <InvoicePreviewPanel />
                   </CardContent>
                 </Card>
               </Grid>

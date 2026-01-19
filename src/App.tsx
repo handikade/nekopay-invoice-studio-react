@@ -5,7 +5,9 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 import * as React from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import InvoicePage from "./invoice/InvoicePage";
+import HomePage from "./pages/HomePage";
 
 const theme = createTheme({
   typography: {
@@ -18,8 +20,13 @@ function App() {
     <React.StrictMode>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <CssBaseline></CssBaseline>
-          <InvoicePage></InvoicePage>
+          <CssBaseline />
+          <HashRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/studio" element={<InvoicePage />} />
+            </Routes>
+          </HashRouter>
         </ThemeProvider>
       </StyledEngineProvider>
     </React.StrictMode>

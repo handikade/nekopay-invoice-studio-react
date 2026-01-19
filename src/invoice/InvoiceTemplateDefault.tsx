@@ -1,23 +1,178 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import styled from "@emotion/styled";
 import type { DeepPartial } from "react-hook-form";
 import type { Invoice } from "./schema";
 
-const invoiceTheme = createTheme({
-  typography: {
-    fontFamily: '"Merriweather", "Georgia", serif',
-  },
-});
+const Container = styled.div`
+  background-color: #fff;
+  padding: 32px;
+  box-sizing: border-box;
+  font-family: "Merriweather", "Georgia", serif;
+  color: #0f172a;
+`;
+
+const SectionDivider = styled.hr`
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 16px 0;
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+`;
+
+const Title = styled.h1`
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+`;
+
+const Stack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+const MetaStack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 220px;
+`;
+
+const Label = styled.span`
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.02em;
+`;
+
+const Text = styled.span`
+  display: block;
+  font-size: 0.95rem;
+  line-height: 1.4;
+`;
+
+const MutedText = styled.span`
+  display: block;
+  font-size: 0.9rem;
+  color: #64748b;
+`;
+
+const SectionGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+`;
+
+const SectionTitle = styled.span`
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.02em;
+`;
+
+const StrongText = styled.span`
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+`;
+
+const TableWrapper = styled.div`
+  overflow-x: auto;
+`;
+
+const InvoiceTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+`;
+
+const TableHeadRow = styled.tr`
+  background-color: #e2e8f0;
+`;
+
+type Align = "left" | "right" | "center";
+
+const TableHeaderCell = styled.th<{ align?: Align }>`
+  padding: 10px 12px;
+  text-align: ${({ align }) => align ?? "left"};
+  font-weight: 600;
+  color: #0f172a;
+  border-bottom: 1px solid #cbd5e1;
+`;
+
+const TableCell = styled.td<{ align?: Align }>`
+  padding: 10px 12px;
+  text-align: ${({ align }) => align ?? "left"};
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+`;
+
+const TotalsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+`;
+
+const TotalsBox = styled.div`
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const TotalsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+`;
+
+const TotalLabel = styled.span`
+  font-size: 0.9rem;
+  color: #64748b;
+`;
+
+const TotalValue = styled.span`
+  font-size: 0.9rem;
+  font-weight: 600;
+`;
+
+const BodyText = styled.p`
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+`;
+
+const SignatureLine = styled.div`
+  height: 64px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #94a3b8;
+`;
+
+const SignatureImage = styled.img`
+  max-height: 56px;
+  max-width: 100%;
+  object-fit: contain;
+`;
+
+const SignaturePlaceholder = styled.span`
+  font-size: 0.85rem;
+  color: #94a3b8;
+`;
 
 type InvoiceTemplateDefaultProps = {
   invoice: DeepPartial<Invoice>;
@@ -95,226 +250,123 @@ const InvoiceTemplateDefault = ({ invoice }: InvoiceTemplateDefaultProps) => {
   const signatureFooter = footer?.signatureTextFooter?.trim() || "--";
 
   return (
-    <ThemeProvider theme={invoiceTheme}>
-      <Box
-        sx={{
-          backgroundColor: "#fff",
-          p: 4,
-          boxSizing: "border-box",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: { xs: "flex-start", md: "center" },
-            justifyContent: "space-between",
-            gap: 2,
-          }}
-        >
-          <Box>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              Invoice
-            </Typography>
-            <Typography color="text.secondary">
-              Invoice No: {formatText(invoice?.invoiceNumber)}
-            </Typography>
-          </Box>
-          <Box sx={{ minWidth: 220 }}>
-            <Typography variant="subtitle2" color="text.secondary">
-              Issue Date
-            </Typography>
-            <Typography variant="body2">
-              {formatDate(invoice?.issueDate)}
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              color="text.secondary"
-              sx={{ mt: 1 }}
-            >
-              Due Date
-            </Typography>
-            <Typography variant="body2">
-              {formatDate(invoice?.dueDate)}
-            </Typography>
-          </Box>
-        </Box>
+    <Container>
+      <Header>
+        <Stack>
+          <Title>Invoice</Title>
+          <MutedText>Invoice No: {formatText(invoice?.invoiceNumber)}</MutedText>
+        </Stack>
+        <MetaStack>
+          <Stack>
+            <Label>Issue Date</Label>
+            <Text>{formatDate(invoice?.issueDate)}</Text>
+          </Stack>
+          <Stack>
+            <Label>Due Date</Label>
+            <Text>{formatDate(invoice?.dueDate)}</Text>
+          </Stack>
+        </MetaStack>
+      </Header>
 
-        <Divider sx={{ my: 2 }} />
+      <SectionDivider />
 
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Typography variant="subtitle2" color="text.secondary">
-              From
-            </Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-              {formatText(invoice?.from?.name)}
-            </Typography>
-            <Typography variant="body2">
-              {formatText(invoice?.from?.address)}
-            </Typography>
-            <Typography variant="body2">
-              Phone: {formatText(invoice?.from?.phone)}
-            </Typography>
-            <Typography variant="body2">
-              Email: {formatText(invoice?.from?.email)}
-            </Typography>
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Typography variant="subtitle2" color="text.secondary">
-              Bill To
-            </Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-              {formatText(invoice?.to?.name)}
-            </Typography>
-            <Typography variant="body2">
-              {formatText(invoice?.to?.address)}
-            </Typography>
-            <Typography variant="body2">
-              Phone: {formatText(invoice?.to?.phone)}
-            </Typography>
-            <Typography variant="body2">
-              Email: {formatText(invoice?.to?.email)}
-            </Typography>
-          </Grid>
-        </Grid>
+      <SectionGrid>
+        <Stack>
+          <SectionTitle>From</SectionTitle>
+          <StrongText>{formatText(invoice?.from?.name)}</StrongText>
+          <Text>{formatText(invoice?.from?.address)}</Text>
+          <Text>Phone: {formatText(invoice?.from?.phone)}</Text>
+          <Text>Email: {formatText(invoice?.from?.email)}</Text>
+        </Stack>
+        <Stack>
+          <SectionTitle>Bill To</SectionTitle>
+          <StrongText>{formatText(invoice?.to?.name)}</StrongText>
+          <Text>{formatText(invoice?.to?.address)}</Text>
+          <Text>Phone: {formatText(invoice?.to?.phone)}</Text>
+          <Text>Email: {formatText(invoice?.to?.email)}</Text>
+        </Stack>
+      </SectionGrid>
 
-        <Divider sx={{ my: 2 }} />
+      <SectionDivider />
 
-        <Box sx={{ overflowX: "auto" }}>
-          <Table size="small">
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "#e2e8f0" }}>
-                <TableCell>Description</TableCell>
-                <TableCell align="right">Qty</TableCell>
-                <TableCell align="right">Unit Price</TableCell>
-                <TableCell align="right">Amount</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {items.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4}>
-                    <Typography color="text.secondary">
-                      No items yet.
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                items.map((item, index) => {
-                  const quantity = getAmount(item?.quantity);
-                  const price = getAmount(item?.price);
-                  const lineTotal = quantity * price;
+      <TableWrapper>
+        <InvoiceTable>
+          <thead>
+            <TableHeadRow>
+              <TableHeaderCell>Description</TableHeaderCell>
+              <TableHeaderCell align="right">Qty</TableHeaderCell>
+              <TableHeaderCell align="right">Unit Price</TableHeaderCell>
+              <TableHeaderCell align="right">Amount</TableHeaderCell>
+            </TableHeadRow>
+          </thead>
+          <tbody>
+            {items.length === 0 ? (
+              <tr>
+                <TableCell colSpan={4}>
+                  <MutedText>No items yet.</MutedText>
+                </TableCell>
+              </tr>
+            ) : (
+              items.map((item, index) => {
+                const quantity = getAmount(item?.quantity);
+                const price = getAmount(item?.price);
+                const lineTotal = quantity * price;
 
-                  return (
-                    <TableRow key={item?.id ?? `${index}-row`}>
-                      <TableCell>{formatText(item?.description)}</TableCell>
-                      <TableCell align="right">
-                        {Number.isFinite(quantity) ? quantity : 0}
-                      </TableCell>
-                      <TableCell align="right">
-                        {formatCurrency(price, currency)}
-                      </TableCell>
-                      <TableCell align="right">
-                        {formatCurrency(lineTotal, currency)}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
-            </TableBody>
-          </Table>
-        </Box>
+                return (
+                  <tr key={item?.id ?? `${index}-row`}>
+                    <TableCell>{formatText(item?.description)}</TableCell>
+                    <TableCell align="right">
+                      {Number.isFinite(quantity) ? quantity : 0}
+                    </TableCell>
+                    <TableCell align="right">
+                      {formatCurrency(price, currency)}
+                    </TableCell>
+                    <TableCell align="right">
+                      {formatCurrency(lineTotal, currency)}
+                    </TableCell>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </InvoiceTable>
+      </TableWrapper>
 
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-          <Box sx={{ minWidth: 220 }}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 2,
-              }}
-            >
-              <Typography color="text.secondary">Subtotal</Typography>
-              <Typography>{formatCurrency(subtotal, currency)}</Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 2,
-                mt: 1,
-              }}
-            >
-              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                Total Due
-              </Typography>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                {formatCurrency(total, currency)}
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
+      <TotalsWrapper>
+        <TotalsBox>
+          <TotalsRow>
+            <TotalLabel>Subtotal</TotalLabel>
+            <Text>{formatCurrency(subtotal, currency)}</Text>
+          </TotalsRow>
+          <TotalsRow>
+            <TotalValue>Total Due</TotalValue>
+            <TotalValue>{formatCurrency(total, currency)}</TotalValue>
+          </TotalsRow>
+        </TotalsBox>
+      </TotalsWrapper>
 
-        <Divider sx={{ my: 2 }} />
+      <SectionDivider />
 
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 7 }}>
-            <Typography variant="subtitle2" color="text.secondary">
-              Terms
-            </Typography>
-            <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
-              {formatText(footer?.terms)}
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              color="text.secondary"
-              sx={{ mt: 2 }}
-            >
-              Notes
-            </Typography>
-            <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
-              {formatText(footer?.notes)}
-            </Typography>
-          </Grid>
-          <Grid size={{ xs: 12, md: 5 }}>
-            <Typography variant="subtitle2" color="text.secondary">
-              {signatureHeader}
-            </Typography>
-            <Box
-              sx={{
-                height: 64,
-                mt: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderBottom: "1px solid #94a3b8",
-              }}
-            >
-              {footer?.signatureURL ? (
-                <Box
-                  component="img"
-                  src={footer.signatureURL}
-                  alt="Signature"
-                  sx={{
-                    maxHeight: 56,
-                    maxWidth: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  Signature
-                </Typography>
-              )}
-            </Box>
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              {signatureFooter}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
-    </ThemeProvider>
+      <SectionGrid>
+        <Stack>
+          <SectionTitle>Terms</SectionTitle>
+          <BodyText>{formatText(footer?.terms)}</BodyText>
+          <SectionTitle>Notes</SectionTitle>
+          <BodyText>{formatText(footer?.notes)}</BodyText>
+        </Stack>
+        <Stack>
+          <SectionTitle>{signatureHeader}</SectionTitle>
+          <SignatureLine>
+            {footer?.signatureURL ? (
+              <SignatureImage src={footer.signatureURL} alt="Signature" />
+            ) : (
+              <SignaturePlaceholder>Signature</SignaturePlaceholder>
+            )}
+          </SignatureLine>
+          <Text>{signatureFooter}</Text>
+        </Stack>
+      </SectionGrid>
+    </Container>
   );
 };
 

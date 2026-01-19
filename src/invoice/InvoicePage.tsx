@@ -5,12 +5,14 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Container,
   Grid,
   Typography,
 } from "@mui/material";
+import { useCallback, useRef } from "react";
 import {
   FormProvider,
   useForm,
@@ -19,6 +21,7 @@ import {
 } from "react-hook-form";
 import InvoiceForm from "./InvoiceForm";
 import InvoiceTemplateDefault from "./InvoiceTemplateDefault";
+import { downloadPdf } from "./pdf";
 
 const glassCardSx = {
   flexGrow: 1,
@@ -40,6 +43,16 @@ const InvoicePage = () => {
   const methods = useForm<Invoice>({
     resolver: zodResolver(invoiceSchema),
   });
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadPdf = useCallback(async () => {
+    const previewElement = previewRef.current;
+    if (!previewElement) {
+      return;
+    }
+    await downloadPdf(previewElement);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -67,13 +80,24 @@ const InvoicePage = () => {
               <Grid size={{ xs: 12, md: 7 }} sx={{ display: "flex" }}>
                 <Card sx={glassCardSx}>
                   <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      Preview
-                    </Typography>
-                    {/* <Typography color="text.secondary">
-                    Render the invoice preview here.
-                  </Typography> */}
-                    <InvoicePreviewPanel />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 2,
+                        mb: 2,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Typography variant="h6">Preview</Typography>
+                      <Button variant="contained" onClick={handleDownloadPdf}>
+                        Download PDF
+                      </Button>
+                    </Box>
+                    <Box ref={previewRef} sx={{ backgroundColor: "#ffffff" }}>
+                      <InvoicePreviewPanel />
+                    </Box>
                   </CardContent>
                 </Card>
               </Grid>

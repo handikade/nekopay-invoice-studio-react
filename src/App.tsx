@@ -6,8 +6,8 @@ import {
 } from "@mui/material/styles";
 import * as React from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import InvoicePage from "./invoice/InvoicePage";
 import HomePage from "./pages/HomePage";
+import InvoicePage from "./pages/invoice/InvoicePage";
 
 const theme = createTheme({
   typography: {

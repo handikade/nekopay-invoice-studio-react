@@ -21,7 +21,7 @@ import {
 } from "react-hook-form";
 import InvoiceForm from "./InvoiceForm";
 import InvoicePreviewer from "./InvoicePreviewer";
-import InvoiceTemplateDefault from "./InvoiceTemplateDefault";
+import InvoiceTemplateDefault from "./components/templates/InvoiceTemplateDefault";
 import { downloadPdf } from "./pdf";
 
 const glassCardSx = {
@@ -71,9 +71,6 @@ const InvoicePage = () => {
                     <Typography variant="h6" gutterBottom>
                       Invoice Editor
                     </Typography>
-                    {/* <Typography color="text.secondary">
-                    Add form fields here.
-                  </Typography> */}
                     <InvoiceForm />
                   </CardContent>
                 </Card>

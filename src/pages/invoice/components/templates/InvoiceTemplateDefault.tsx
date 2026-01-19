@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import type { DeepPartial } from "react-hook-form";
-import type { Invoice } from "./schema";
+import type { Invoice } from "../../schema";
 
 const Container = styled.div`
   background-color: #fff;
@@ -8,6 +8,7 @@ const Container = styled.div`
   box-sizing: border-box;
   font-family: "Merriweather", "Georgia", serif;
   color: #0f172a;
+  min-height: 1200px;
 `;
 
 const SectionDivider = styled.hr`
@@ -254,7 +255,9 @@ const InvoiceTemplateDefault = ({ invoice }: InvoiceTemplateDefaultProps) => {
       <Header>
         <Stack>
           <Title>Invoice</Title>
-          <MutedText>Invoice No: {formatText(invoice?.invoiceNumber)}</MutedText>
+          <MutedText>
+            Invoice No: {formatText(invoice?.invoiceNumber)}
+          </MutedText>
         </Stack>
         <MetaStack>
           <Stack>

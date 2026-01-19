@@ -20,6 +20,7 @@ import {
   useWatch,
 } from "react-hook-form";
 import InvoiceForm from "./InvoiceForm";
+import InvoicePreviewer from "./InvoicePreviewer";
 import InvoiceTemplateDefault from "./InvoiceTemplateDefault";
 import { downloadPdf } from "./pdf";
 
@@ -95,9 +96,15 @@ const InvoicePage = () => {
                         Download PDF
                       </Button>
                     </Box>
-                    <Box ref={previewRef} sx={{ backgroundColor: "#ffffff" }}>
-                      <InvoicePreviewPanel />
-                    </Box>
+                    <InvoicePreviewer>
+                      <Box
+                        ref={previewRef}
+                        data-invoice-preview-root="true"
+                        sx={{ backgroundColor: "#ffffff" }}
+                      >
+                        <InvoicePreviewPanel />
+                      </Box>
+                    </InvoicePreviewer>
                   </CardContent>
                 </Card>
               </Grid>

@@ -24,6 +24,46 @@ type DownloadInvoicePdfOptions = {
   saveFile?: (pdf: InstanceType<PdfFactory>, filename: string) => void;
 };
 
+const normalizePreviewForPdf = (clonedDocument: Document) => {
+  const clonedPreview = clonedDocument.querySelector(
+    '[data-invoice-preview-root="true"]',
+  ) as HTMLElement | null;
+
+  if (!clonedPreview) {
+    return;
+  }
+
+  const content = clonedPreview.closest(
+    '[data-invoice-preview-content="true"]',
+  ) as HTMLElement | null;
+  const wrapper = clonedPreview.closest(
+    '[data-invoice-preview-wrapper="true"]',
+  ) as HTMLElement | null;
+
+  if (content) {
+    content.style.transform = "none";
+    content.style.transformOrigin = "top left";
+  }
+
+  if (wrapper) {
+    const width = content?.offsetWidth ?? 0;
+    const height = content?.offsetHeight ?? 0;
+
+    if (width > 0) {
+      wrapper.style.width = `${width}px`;
+    }
+
+    if (height > 0) {
+      wrapper.style.height = `${height}px`;
+    } else {
+      wrapper.style.height = "auto";
+    }
+
+    wrapper.style.overflow = "visible";
+    wrapper.style.transform = "none";
+  }
+};
+
 export const downloadPdf = async (
   previewElement: HTMLElement,
   options: DownloadInvoicePdfOptions = {},
@@ -37,6 +77,7 @@ export const downloadPdf = async (
     backgroundColor: "#ffffff",
     scale: 2,
     useCORS: true,
+    onclone: normalizePreviewForPdf,
   });
   const imgData = canvas.toDataURL("image/png");
   const pdf = new createPdf({ orientation: "p", unit: "pt", format: "a4" });

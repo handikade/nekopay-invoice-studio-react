@@ -18,6 +18,7 @@ const invoiceTheme = createTheme({
     fontFamily: '"Merriweather", "Georgia", serif',
   },
 });
+
 type InvoiceTemplateDefaultProps = {
   invoice: DeepPartial<Invoice>;
 };
@@ -53,7 +54,7 @@ const formatDate = (value: unknown) => {
 
   if (typeof (value as { format?: unknown }).format === "function") {
     return (value as { format: (format: string) => string }).format(
-      "MMM DD, YYYY"
+      "MMM DD, YYYY",
     );
   }
 
@@ -97,10 +98,9 @@ const InvoiceTemplateDefault = ({ invoice }: InvoiceTemplateDefaultProps) => {
     <ThemeProvider theme={invoiceTheme}>
       <Box
         sx={{
-          backgroundColor: "#f8fafc",
-          borderRadius: "16px",
-          p: { xs: 2, md: 3 },
-          border: "1px solid #e2e8f0",
+          backgroundColor: "#fff",
+          p: 4,
+          boxSizing: "border-box",
         }}
       >
         <Box
@@ -296,7 +296,11 @@ const InvoiceTemplateDefault = ({ invoice }: InvoiceTemplateDefaultProps) => {
                   component="img"
                   src={footer.signatureURL}
                   alt="Signature"
-                  sx={{ maxHeight: 56, maxWidth: "100%", objectFit: "contain" }}
+                  sx={{
+                    maxHeight: 56,
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                  }}
                 />
               ) : (
                 <Typography variant="body2" color="text.secondary">

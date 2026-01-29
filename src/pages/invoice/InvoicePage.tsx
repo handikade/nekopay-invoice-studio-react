@@ -12,7 +12,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   FormProvider,
   useForm,
@@ -21,6 +21,7 @@ import {
 } from "react-hook-form";
 import InvoiceForm from "./InvoiceForm";
 import InvoicePreviewer from "./InvoicePreviewer";
+import InvoiceWizardHeader from "./components/InvoiceWizardHeader";
 import InvoiceTemplateDefault from "./components/templates/InvoiceTemplateDefault";
 import { downloadPdf } from "./pdf";
 
@@ -41,6 +42,7 @@ const InvoicePreviewPanel = () => {
 };
 
 const InvoicePage = () => {
+  const [activeStep, setActiveStep] = useState(0);
   const methods = useForm<Invoice>({
     resolver: zodResolver(invoiceSchema),
   });
@@ -57,10 +59,20 @@ const InvoicePage = () => {
   return (
     <Box
       sx={{
-        p: { xs: 2, md: 3 },
         flexGrow: 1,
       }}
     >
+      <InvoiceWizardHeader
+        steps={[
+          "Umum",
+          "Tagihan Dari",
+          "Tagihan Untuk",
+          "Item Tagihan",
+          "Lainnya",
+        ]}
+        activeStep={activeStep}
+      ></InvoiceWizardHeader>
+
       <Container maxWidth="lg">
         <Box sx={{ position: "relative", zIndex: 1 }}>
           <FormProvider {...methods}>

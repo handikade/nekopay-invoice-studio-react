@@ -1,11 +1,11 @@
 import { Box, Button } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import InvoiceFormFooter from "./InvoiceFormFooter";
-import InvoiceFormFrom from "./InvoiceFormFrom";
-import InvoiceFormGeneral from "./InvoiceFormGeneral";
-import InvoiceFormItems from "./InvoiceFormItems";
-import InvoiceFormTo from "./InvoiceFormTo";
+import InvoiceFormFooter from "./components/forms/InvoiceFormFooter";
+import InvoiceFormFrom from "./components/forms/InvoiceFormFrom";
+import InvoiceFormGeneral from "./components/forms/InvoiceFormGeneral";
+import InvoiceFormItems from "./components/forms/InvoiceFormItems";
+import InvoiceFormTo from "./components/forms/InvoiceFormTo";
 
 export type InvoiceFormProps = {
   activeStep: number;

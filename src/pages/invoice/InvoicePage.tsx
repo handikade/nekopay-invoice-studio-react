@@ -76,14 +76,17 @@ const InvoicePage = () => {
       <Container maxWidth="lg">
         <Box sx={{ position: "relative", zIndex: 1 }}>
           <FormProvider {...methods}>
-            <Grid container spacing={2} alignItems="stretch">
+            <Grid container spacing={2} alignItems="flex-start">
               <Grid size={{ xs: 12, md: 5 }} sx={{ display: "flex" }}>
                 <Card sx={glassCardSx}>
                   <CardContent>
                     <Typography variant="h6" gutterBottom>
                       Invoice Editor
                     </Typography>
-                    <InvoiceForm />
+                    <InvoiceForm
+                      setActiveStep={setActiveStep}
+                      activeStep={activeStep}
+                    />
                   </CardContent>
                 </Card>
               </Grid>

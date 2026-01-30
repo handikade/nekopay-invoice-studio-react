@@ -5,6 +5,8 @@ export const invoiceItemSchema = z.object({
   description: z.string().min(1),
   quantity: z.number().positive(),
   price: z.number().nonnegative(),
+  discount: z.number().nonnegative(),
+  discountType: z.enum(["percentage", "fixed"]),
 });
 
 export const invoiceFromSchema = z.object({

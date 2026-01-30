@@ -5,10 +5,11 @@ import {
   Card,
   CardContent,
   Grid,
+  MenuItem,
   TextField,
   Typography,
 } from "@mui/material";
-import { useFormContext, useWatch } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 const glassCardSx = {
   flexGrow: 1,
@@ -18,6 +19,11 @@ const glassCardSx = {
   backdropFilter: "blur(18px) saturate(140%)",
   borderRadius: "10px",
 };
+
+const discountTypeOptions = [
+  { value: "percentage", label: "%" },
+  { value: "fixed", label: "#" },
+];
 
 export type InvoiceFormItemProps = {
   index: number;
@@ -30,36 +36,66 @@ const InvoiceFormItem = ({
   onRemove,
   autoFocus,
 }: InvoiceFormItemProps) => {
-  const { control, register } = useFormContext();
+  const { control, register, setValue } = useFormContext();
   const quantity = useWatch({
     control,
     name: `items.${index}.quantity`,
+    defaultValue: 0,
   });
   const price = useWatch({
     control,
     name: `items.${index}.price`,
+    defaultValue: 0,
   });
-  const total = (Number(quantity) || 0) * (Number(price) || 0);
-  const totalLabel = Number.isFinite(total) ? total.toFixed(2) : "0.00";
+  const discount = useWatch({
+    control,
+    name: `items.${index}.discount`,
+    defaultValue: 0,
+  });
+  const discountType = useWatch({
+    control,
+    name: `items.${index}.discountType`,
+    defaultValue: "",
+  });
+
+  const subTotal = quantity * price;
+  const discountAmount =
+    discountType === "percentage" ? subTotal * (discount / 100) : discount;
+
+  const grandTotal = subTotal - discountAmount;
+  const totalLabel = Number.isFinite(grandTotal)
+    ? grandTotal.toFixed(2)
+    : "0.00";
+
+  const handleDiscountTypeChange = () => {
+    setValue(`items.${index}.discount`, 0, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
 
   return (
     <Card sx={glassCardSx}>
       <CardContent>
         <input type="hidden" {...register(`items.${index}.id`)} />
+        {/* ROW I */}
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 12 }}>
             <TextField
               autoFocus={autoFocus}
               fullWidth
-              label="Description"
+              label="Deskripsi"
               variant="outlined"
               {...register(`items.${index}.description`)}
             />
           </Grid>
+          {/* end of ROW I */}
+
+          {/* ROW II */}
           <Grid size={{ xs: 6, md: 6 }}>
             <TextField
               fullWidth
-              label="Quantity"
+              label="Qty"
               type="number"
               variant="outlined"
               slotProps={{ htmlInput: { min: 1, step: 1 } }}
@@ -76,6 +112,78 @@ const InvoiceFormItem = ({
               {...register(`items.${index}.price`, { valueAsNumber: true })}
             />
           </Grid>
+          {/* end of ROW II */}
+
+          {/* ROW III */}
+          <Grid size={{ xs: 6, md: 6 }}>
+            <Controller
+              name={`items.${index}.discountType`}
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  select
+                  fullWidth
+                  label="Tipe Diskon"
+                  value={field.value ?? ""}
+                  onChange={(event) => {
+                    field.onChange(event);
+                    handleDiscountTypeChange();
+                  }}
+                  slotProps={{
+                    inputLabel: { shrink: true },
+                    select: {
+                      displayEmpty: true,
+                      renderValue: (selectedValue) => {
+                        const selected = discountTypeOptions.find(
+                          (option) => option.value === selectedValue,
+                        );
+
+                        if (!selected) {
+                          return (
+                            <Typography color="text.secondary">
+                              Pilih
+                            </Typography>
+                          );
+                        }
+
+                        return (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Typography>{selected.label}</Typography>
+                          </Box>
+                        );
+                      },
+                    },
+                  }}
+                >
+                  {discountTypeOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      <Typography>
+                        {option.label} ({option.value})
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 6, md: 6 }}>
+            <TextField
+              fullWidth
+              label="Nilai Diskon"
+              type="number"
+              variant="outlined"
+              slotProps={{ htmlInput: { min: 0, step: "0.01" } }}
+              {...register(`items.${index}.discount`, { valueAsNumber: true })}
+            />
+          </Grid>
+          {/* end of ROW III */}
         </Grid>
         <Box
           sx={{

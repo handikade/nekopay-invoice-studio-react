@@ -1,6 +1,6 @@
 import { Box, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { Controller, useFormContext } from "react-hook-form";
 
 const currencyOptions = [
@@ -46,8 +46,8 @@ const InvoiceFormGeneral = () => {
           render={({ field }) => (
             <DatePicker
               label="Issue Date"
-              value={field.value as Dayjs}
-              onChange={(v) => field.onChange(v)}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(v) => field.onChange(v ? v.toDate() : null)}
               slotProps={{
                 textField: {
                   error: !!errors.issueDate,
@@ -66,8 +66,8 @@ const InvoiceFormGeneral = () => {
           render={({ field }) => (
             <DatePicker
               label="Due Date"
-              value={field.value as Dayjs}
-              onChange={(v) => field.onChange(v)}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(v) => field.onChange(v ? v.toDate() : null)}
               slotProps={{
                 textField: {
                   error: !!errors.dueDate,
@@ -97,7 +97,7 @@ const InvoiceFormGeneral = () => {
                   displayEmpty: true,
                   renderValue: (selectedValue) => {
                     const selected = currencyOptions.find(
-                      (option) => option.value === selectedValue
+                      (option) => option.value === selectedValue,
                     );
 
                     if (!selected) {
